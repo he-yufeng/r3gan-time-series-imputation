@@ -302,8 +302,3 @@ datasets/
 - SSGAN 和 TimesNet 实现基于各自论文
 - GUI 框架使用 Plotly Dash 构建
 - 数据集来自 PhysioNet、UCI ML Repository 和 eBay
-
----
-
-**注意**：本项目作为香港大学 COMP7103 数据挖掘课程项目开发。学术使用请适当引用。
-
