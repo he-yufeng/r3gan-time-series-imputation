@@ -8,15 +8,19 @@
 
 ## 📖 项目简介
 
-MTSIR3-GAN 是一个用于 多变量时间序列插补（MTSI） 的新型深度学习框架，它将图像生成领域的 R3GAN 架构成功迁移到时间序列数据处理中。该项目在多个时间序列数据集上展现了最先进的缺失值填补性能。
+MTSIR3-GAN 是一个将 **R3GAN**（NeurIPS 2024）从图像生成迁移到**多变量时间序列插补（MTSI）**的研究项目。本仓库包含原始毕设实现以及扩展实证研究（FMGAN），系统分析了对抗性精炼在时序插补中的适用边界。
 
 ### 核心特性
 
-- 🎯 **业界领先性能**：相比 GAN 基线（SSGAN）降低约 10.6% 的误差，相比非 GAN 基线（TimesNet）降低约 3.7% 的误差
-- 🏗️ **现代化架构**：采用 ResNet 风格模块，配合 Fixup 初始化，无需归一化层即可实现稳定训练
-- 🔬 **稳健训练机制**：使用正则化相对论损失（RpGAN + R₁ + R₂）防止模式坍塌，确保训练稳定性
-- 🌐 **交互式图形界面**：基于 Dash 框架构建的 Web 界面，支持数据上传、可视化和插补操作
-- 📊 **多模型支持**：包含 R3GAN、SSGAN 和 TimesNet 的完整实现，便于全面对比
+- 🎯 **竞争性性能**：相比 SSGAN 降低约 10.6% MAE，相比 TimesNet 降低约 3.7% MAE
+- 🏗️ **现代化架构**：R3GAN-1D 一维卷积适配，Fixup 初始化，频域判别器
+- 🔬 **稳健训练机制**：正则化相对论损失（RpGAN + R₁ + R₂），训练稳定无模式坍塌
+- 🌐 **交互式图形界面**：基于 Dash 框架构建的 Web 界面，支持数据上传、可视化和插补
+- 📊 **系统实证研究（FMGAN）**：15+ 组实验，揭示 GAN 精炼何时有效、何时失效
+
+### 最新研究：FMGAN
+
+`FMGAN/` 目录包含扩展研究的核心发现：**R3GAN 能将弱填补方法（均值填充/零填充）的 MAE 降低 48–70%，但无法改善强方法（线性插值，变化 <1%）**。这揭示了对抗性分布优化与逐点插补精度之间的根本矛盾。
 
 ## 🚀 快速开始
 
@@ -120,33 +124,27 @@ final = incomplete_data * mask + imputed.cpu().numpy() * (1 - mask)
 
 ```
 MTSIR3-GAN/
-├── TSImputation-master/          # 核心插补模型
-│   ├── R3GAN/                    # MTSIR3-GAN 实现
-│   │   ├── train.py              # 训练脚本
-│   │   ├── gen_timeseries.py     # 生成脚本
-│   │   ├── R3GAN/                # 网络架构
-│   │   └── training/             # 训练循环和损失函数
-│   ├── SSGAN/                    # 半监督 GAN 基线
-│   │   ├── main.py               # 训练和评估
-│   │   └── models/               # 模型定义
-│   ├── TimesNet/                 # TimesNet 基线
-│   │   ├── run.py                # 主入口
-│   │   ├── exp/                  # 实验类
-│   │   └── models/               # 模型实现
-│   └── datasets/                 # 数据集目录
-├── PURE-GUIv2/                   # Web 界面（最新版本）
-│   ├── app_dad.py                # 主应用程序
-│   ├── pages/                    # 界面模块
-│   │   ├── data_analysis_dad.py
-│   │   ├── time_imputation_dad.py
-│   │   └── model_visualization.py
-│   ├── model_files/              # 预训练模型
-│   └── uploaded_files/           # 用户上传文件
-├── PURE-GUI/                     # 旧版 GUI（参考）
-├── figures/                      # 可视化资源
-├── requirements.txt              # Python 依赖
-├── .gitignore                    # Git 忽略规则
-└── README.md                     # 英文说明文档
+├── R3GAN/                    # MTSIR3-GAN 实现（原始毕设）
+│   ├── train.py              # 训练脚本
+│   ├── gen_timeseries.py     # 生成脚本
+│   ├── R3GAN/                # 网络架构
+│   └── training/             # 训练循环和损失函数
+├── SSGAN/                    # 半监督 GAN 基线
+├── TimesNet/                 # TimesNet 基线（30+ 模型）
+├── PURE-GUIv2.0/             # Dash Web 界面
+├── FMGAN/                    # 扩展实证研究
+│   ├── models/r3gan_1d.py    # R3GAN-1D 架构（一维卷积适配）
+│   ├── train_refiner.py      # 粗到精训练脚本
+│   ├── foundation_model/     # MOMENT 基础模型封装
+│   ├── evaluation/           # 评估指标与基线（SAITS/BRITS/CSDI）
+│   ├── data/                 # 统一数据加载（支持3种缺失模式）
+│   ├── scripts/              # 实验运行脚本
+│   └── paper/                # Workshop 论文（ICML 2026 格式）
+│       ├── main.tex          # 论文源码
+│       ├── main.pdf          # 编译好的 PDF
+│       └── figures/          # 论文图表
+├── datasets/                 # 数据集目录（不含在 git 中）
+└── requirements.txt
 ```
 
 ## 📊 数据集
