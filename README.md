@@ -8,15 +8,19 @@
 
 ## 📖 Overview
 
-MTSIR3-GAN is a novel deep learning framework for **Multivariate Time Series Imputation (MTSI)** that adapts the principled R3GAN architecture from image generation to temporal data. This project demonstrates state-of-the-art performance in handling missing values across diverse time series datasets.
+MTSIR3-GAN is a research project adapting **R3GAN** (NeurIPS 2024) from image generation to **Multivariate Time Series Imputation (MTSI)**. This repository contains both the original thesis implementation and an extended empirical study (FMGAN) examining when adversarial refinement helps for time series imputation.
 
 ### Key Features
 
-- 🎯 **State-of-the-art Performance**: Achieves competitive imputation accuracy with ~10.6% error reduction vs GAN baselines (SSGAN) and ~3.7% vs non-GAN baselines (TimesNet)
-- 🏗️ **Modern Architecture**: Leverages ResNet-style blocks with Fixup initialization for stable training without normalization layers
-- 🔬 **Robust Training**: Employs regularized relativistic loss (RpGAN + R₁ + R₂) to prevent mode collapse and ensure training stability
-- 🌐 **Interactive GUI**: Web-based interface built with Dash for data upload, visualization, and imputation
-- 📊 **Multiple Models**: Includes implementations of R3GAN, SSGAN, and TimesNet for comprehensive benchmarking
+- 🎯 **Competitive Performance**: ~10.6% MAE reduction vs SSGAN and ~3.7% vs TimesNet on benchmark datasets
+- 🏗️ **Modern Architecture**: R3GAN-1D adaptation with 1D convolutions, Fixup initialization, and frequency-domain discriminator
+- 🔬 **Robust Training**: Regularized relativistic loss (RpGAN + R₁ + R₂) for stable adversarial training
+- 🌐 **Interactive GUI**: Dash-based web interface for data upload, visualization, and imputation
+- 📊 **Systematic Study (FMGAN)**: 15+ experiments revealing when GAN refinement helps vs. hurts
+
+### Latest Research: FMGAN
+
+The `FMGAN/` directory contains an extended study with the key finding: **R3GAN dramatically improves weak imputers (48–70% MAE reduction from mean/zero fill) but cannot improve strong ones (linear interpolation, <1% change)**. This reveals a fundamental tension between adversarial distributional optimization and point-wise imputation accuracy.
 
 ## 🚀 Quick Start
 
@@ -120,29 +124,27 @@ final = incomplete_data * mask + imputed.cpu().numpy() * (1 - mask)
 
 ```
 MTSIR3-GAN/
-├── R3GAN/                    # MTSIR3-GAN implementation
+├── R3GAN/                    # MTSIR3-GAN implementation (original thesis)
 │   ├── train.py              # Training script
 │   ├── gen_timeseries.py     # Generation script
 │   ├── R3GAN/                # Network architectures
 │   └── training/             # Training loop and loss functions
 ├── SSGAN/                    # Semi-Supervised GAN baseline
-│   ├── main.py               # Training and evaluation
-│   └── models/               # Model definitions
-├── TimesNet/                 # TimesNet baseline
-│   ├── run.py                # Main entry point
-│   ├── exp/                  # Experiment classes
-│   └── models/               # Model implementations
-├── PURE-GUIv2.0/            # Web interface
-│   ├── app_dad.py            # Main application
-│   └── pages/                # UI modules
-├── datasets/                 # Dataset directory
-├── figures/                  # Visualization assets
-├── requirements.txt          # Python dependencies
-├── .gitignore                # Git ignore rules
-├── README.md                 # This file
-├── README_CN.md              # Chinese documentation
-├── USAGE_GUIDE.md            # Detailed usage instructions
-└── PROJECT_STRUCTURE.md      # Complete structure guide
+├── TimesNet/                 # TimesNet baseline (30+ models)
+├── PURE-GUIv2.0/             # Dash web interface
+├── FMGAN/                    # Extended empirical study
+│   ├── models/r3gan_1d.py    # R3GAN-1D architecture (1D adaptation)
+│   ├── train_refiner.py      # Coarse-to-fine training script
+│   ├── foundation_model/     # MOMENT foundation model wrapper
+│   ├── evaluation/           # Metrics, baselines (SAITS/BRITS/CSDI)
+│   ├── data/                 # Unified data loading (3 missing patterns)
+│   ├── scripts/              # Experiment runner scripts
+│   └── paper/                # Workshop paper (ICML 2026 format)
+│       ├── main.tex          # Paper source
+│       ├── main.pdf          # Compiled PDF
+│       └── figures/          # Paper figures
+├── datasets/                 # Dataset directory (not in git)
+└── requirements.txt
 ```
 
 ## 📊 Datasets

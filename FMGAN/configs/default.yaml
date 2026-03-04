@@ -1,0 +1,88 @@
+# FMGAN Default Configuration
+
+# ============ Datasets ============
+data:
+  datasets:
+    - name: AirQuality
+      features: 36
+      seq_len: 36
+    - name: ETTh1
+      features: 7
+      seq_len: 96
+    - name: ETTh2
+      features: 7
+      seq_len: 96
+    - name: PhysioNet2012
+      features: 35
+      seq_len: 48
+    - name: Weather
+      features: 21
+      seq_len: 96
+    - name: Electricity
+      features: 321
+      seq_len: 96
+    - name: PSM
+      features: 25
+      seq_len: 100
+    - name: METR-LA
+      features: 207
+      seq_len: 24
+
+  missing_rates: [0.1, 0.25, 0.5, 0.7, 0.9]
+  missing_patterns: [point, subsequence, block]
+  default_missing_rate: 0.25
+  default_missing_pattern: point
+
+# ============ Foundation Model (Stage 1) ============
+foundation_model:
+  name: MOMENT-1-large
+  pretrained: AutonLab/MOMENT-1-large
+  frozen: true             # Freeze in Phase 0; optionally finetune in Phase 1
+  input_len: 512           # MOMENT's native input length
+  patch_len: 8
+
+# ============ GAN Refiner (Stage 2) ============
+gan:
+  # Generator
+  noise_dim: 64
+  width_per_stage: [192, 192, 192, 192]
+  blocks_per_stage: [2, 2, 2, 2]
+  cardinality_per_stage: [72, 72, 72, 72]
+  expansion_factor: 2
+  kernel_size: 3
+  resampling_filter: [1, 2, 1]
+
+  # Discriminator
+  freq_branch: true        # Enable frequency-domain discriminator branch
+
+  # Training
+  batch_size: 64
+  learning_rate: 2.0e-4
+  lr_final: 5.0e-5
+  gamma_init: 0.05         # R1/R2 regularization strength
+  gamma_final: 0.005
+  beta2_init: 0.9
+  beta2_final: 0.99
+  ema_nimg: 500000
+  total_kimg: 10000
+
+  # Loss weights
+  lambda_recon: 10.0       # Reconstruction loss weight
+  lambda_freq: 1.0         # Frequency domain loss weight
+  residual_learning: true  # Generator learns residual (X_refined - X_coarse)
+
+# ============ Training ============
+training:
+  seed: 42
+  num_gpus: 1
+  fp16: true
+  workers: 4
+  log_interval: 100        # Log every N iterations
+  save_interval: 2000      # Save checkpoint every N iterations
+  eval_interval: 2000      # Evaluate every N iterations
+  wandb_project: FMGAN
+
+# ============ Evaluation ============
+evaluation:
+  metrics: [mae, mse, rmse, mre]
+  num_runs: 3              # Run each experiment 3 times for error bars

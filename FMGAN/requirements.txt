@@ -1,0 +1,34 @@
+# FMGAN: Foundation Model Enhanced GAN for Time Series Imputation
+# Environment: Python 3.10+, CUDA 11.8+
+
+# Core
+torch>=2.1.0
+torchvision>=0.16.0
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.11.0
+
+# Foundation Model
+momentfm>=1.0.0
+transformers>=4.36.0
+huggingface-hub>=0.20.0
+
+# Baseline Evaluation (PyPOTS ecosystem)
+pypots>=0.8.0
+tsdb>=0.6.0
+pygrinder>=0.7.0
+benchpots>=0.2.0
+
+# Visualization & Analysis
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Experiment Tracking
+wandb>=0.16.0
+tqdm>=4.65.0
+
+# Utilities
+scikit-learn>=1.3.0
+click>=8.1.0
+pyyaml>=6.0

@@ -172,3 +172,34 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# ===== FMGAN additions =====
+.DS_Store
+*.DS_Store
+
+# Large binary files
+*.pt
+*.pth
+*.npy
+*.npz
+*.pkl
+
+# Experiment results (too large for git)
+FMGAN/results/
+
+# Dataset directory
+datasets/
+
+# LaTeX build artifacts
+FMGAN/paper/*.aux
+FMGAN/paper/*.bbl
+FMGAN/paper/*.blg
+FMGAN/paper/*.log
+FMGAN/paper/*.out
+FMGAN/paper/*.toc
+FMGAN/paper/icml2026_template/
+FMGAN/paper/overleaf_submission/
+FMGAN/paper/submission_icml2026.zip
+
+# Zip files
+*.zip
