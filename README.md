@@ -36,8 +36,11 @@ cd MTSIR3-GAN
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
+# Install core dependencies
 pip install -r requirements.txt
+
+# For the FMGAN empirical study, also install its extras
+pip install -r FMGAN/requirements.txt
 ```
 
 ### Launch the GUI
@@ -125,29 +128,28 @@ final = incomplete_data * mask + imputed.cpu().numpy() * (1 - mask)
 
 ## 📁 Project Structure
 
+Each top-level folder has its own `README.md` with usage and provenance.
+
 ```
 MTSIR3-GAN/
-├── R3GAN/                    # MTSIR3-GAN implementation (original thesis)
-│   ├── train.py              # Training script
-│   ├── gen_timeseries.py     # Generation script
-│   ├── R3GAN/                # Network architectures
-│   └── training/             # Training loop and loss functions
-├── SSGAN/                    # Semi-Supervised GAN baseline
-├── TimesNet/                 # TimesNet baseline (30+ models)
+├── R3GAN/                    # Thesis model (R3GAN adapted to MTSI); see R3GAN/README.md
+│   ├── train.py              # Training entry point
+│   ├── gen_timeseries.py     # Generation / imputation
+│   ├── R3GAN/                # Network architectures (relativistic-loss GAN)
+│   └── training/             # Training loop and losses
+├── SSGAN/                    # SSGAN baseline (Miao et al., AAAI 2021)
+├── TimesNet/                 # TimesNet baseline (vendored from THUML TSLib)
 ├── PURE-GUIv2.0/             # Dash web interface
-├── FMGAN/                    # Extended empirical study
+├── FMGAN/                    # Extended empirical study (coarse-to-fine refinement)
 │   ├── models/r3gan_1d.py    # R3GAN-1D architecture (1D adaptation)
 │   ├── train_refiner.py      # Coarse-to-fine training script
 │   ├── foundation_model/     # MOMENT foundation model wrapper
 │   ├── evaluation/           # Metrics, baselines (SAITS/BRITS/CSDI)
 │   ├── data/                 # Unified data loading (3 missing patterns)
-│   ├── scripts/              # Experiment runner scripts
-│   └── paper/                # Workshop paper (ICML 2026 format)
-│       ├── main.tex          # Paper source
-│       ├── main.pdf          # Compiled PDF
-│       └── figures/          # Paper figures
-├── datasets/                 # Dataset directory (not in git)
-└── requirements.txt
+│   └── scripts/              # Experiment runner scripts
+├── datasets/                 # Sample data + download instructions; see datasets/README.md
+├── requirements.txt          # Core deps (+ FMGAN/requirements.txt for the study)
+└── LICENSE                   # MIT (original code); third-party folders keep their own
 ```
 
 ## 📊 Datasets

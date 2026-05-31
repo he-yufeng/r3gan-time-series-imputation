@@ -36,8 +36,11 @@ cd MTSIR3-GAN
 python -m venv venv
 source venv/bin/activate  # Windows 系统：venv\Scripts\activate
 
-# 安装依赖
+# 安装核心依赖
 pip install -r requirements.txt
+
+# 跑 FMGAN 实证研究还需额外依赖
+pip install -r FMGAN/requirements.txt
 ```
 
 ### 启动图形界面
@@ -123,29 +126,28 @@ final = incomplete_data * mask + imputed.cpu().numpy() * (1 - mask)
 
 ## 📁 项目结构
 
+每个顶层文件夹都有自己的 `README.md`，说明用法与出处。
+
 ```
 MTSIR3-GAN/
-├── R3GAN/                    # MTSIR3-GAN 实现（原始毕设）
-│   ├── train.py              # 训练脚本
-│   ├── gen_timeseries.py     # 生成脚本
-│   ├── R3GAN/                # 网络架构
-│   └── training/             # 训练循环和损失函数
-├── SSGAN/                    # 半监督 GAN 基线
-├── TimesNet/                 # TimesNet 基线（30+ 模型）
+├── R3GAN/                    # 毕设模型（R3GAN 迁移到 MTSI）；见 R3GAN/README.md
+│   ├── train.py              # 训练入口
+│   ├── gen_timeseries.py     # 生成 / 插补
+│   ├── R3GAN/                # 网络架构（相对论损失 GAN）
+│   └── training/             # 训练循环与损失
+├── SSGAN/                    # SSGAN 基线（Miao et al., AAAI 2021）
+├── TimesNet/                 # TimesNet 基线（vendored 自 THUML TSLib）
 ├── PURE-GUIv2.0/             # Dash Web 界面
-├── FMGAN/                    # 扩展实证研究
-│   ├── models/r3gan_1d.py    # R3GAN-1D 架构（一维卷积适配）
+├── FMGAN/                    # 扩展实证研究（由粗到精精炼）
+│   ├── models/r3gan_1d.py    # R3GAN-1D 架构（一维适配）
 │   ├── train_refiner.py      # 粗到精训练脚本
 │   ├── foundation_model/     # MOMENT 基础模型封装
 │   ├── evaluation/           # 评估指标与基线（SAITS/BRITS/CSDI）
-│   ├── data/                 # 统一数据加载（支持3种缺失模式）
-│   ├── scripts/              # 实验运行脚本
-│   └── paper/                # Workshop 论文（ICML 2026 格式）
-│       ├── main.tex          # 论文源码
-│       ├── main.pdf          # 编译好的 PDF
-│       └── figures/          # 论文图表
-├── datasets/                 # 数据集目录（不含在 git 中）
-└── requirements.txt
+│   ├── data/                 # 统一数据加载（3 种缺失模式）
+│   └── scripts/              # 实验运行脚本
+├── datasets/                 # 样例数据 + 下载说明；见 datasets/README.md
+├── requirements.txt          # 核心依赖（FMGAN 研究另见 FMGAN/requirements.txt）
+└── LICENSE                   # MIT（原创代码）；第三方文件夹各自保留许可证
 ```
 
 ## 📊 数据集

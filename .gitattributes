@@ -1,0 +1,15 @@
+# Normalize line endings
+* text=auto
+
+# --- Third-party / vendored code: exclude from GitHub language stats & diffs ---
+# These directories contain upstream code (see each folder's README), not the
+# author's original contribution. Marking them keeps the language bar honest.
+TimesNet/**            linguist-vendored
+SSGAN/**               linguist-vendored
+R3GAN/dnnlib/**        linguist-vendored
+R3GAN/torch_utils/**   linguist-vendored
+R3GAN/metrics/**       linguist-vendored
+R3GAN/legacy.py        linguist-vendored
+
+# LaTeX class/style/bst templates and paper assets — documentation, not source
+FMGAN/paper/**         linguist-documentation
