@@ -129,7 +129,7 @@ We apply 25\% artificial point-missing (MCAR) and use a 70/15/15 train/val/test 
 Width=64, 3 stages, 2 blocks/stage, cardinality=16, noise dimension=32. Training: lr=$10^{-4}$, $\gamma$=0.5, $\lambda_r$=20, $\lambda_f$=2, batch size=32, cosine LR decay, EMA. Early stopping based on validation MAE.
 
 \textbf{Baselines.}
-BRITS~\citep{cao2018brits} and SAITS~\citep{du2023saits} via PyPOTS~\citep{du2023saits}, plus standard coarse methods (zero fill, mean fill, linear interpolation).
+BRITS~\citep{cao2018brits} and SAITS~\citep{du2023saits} via the PyPOTS toolkit, plus standard coarse methods (zero fill, mean fill, linear interpolation).
 
 \subsection{Refinement Effectiveness}
 
